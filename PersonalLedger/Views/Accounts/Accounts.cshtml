@@ -1,0 +1,188 @@
+﻿@model PersonalLedger.ViewModels.AccountsViewModel
+@using PersonalLedger.Repositories;
+@using PersonalLedger.DomainModels;
+
+@{
+    ViewBag.Title = "Accounts";
+}
+
+<div class="outerBorder">
+    <div class="innerBorder">
+        <table style="margin:auto;">
+            <caption>Accounts</caption>
+            <thead>
+                <tr>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "name", "Name" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "type", "Type" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "institution", "Institution" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "number", "Number" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "openbal", "Opening Bal" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "balance", "Balance" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "interest", "Interest" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "limit", "Limit" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "opened", "Date Opened" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "closed", "Date Closed" })
+                    </th>
+                    <th colspan="2">
+                        <a href="#" class="tableHeadCell">&nbsp;</a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @using (Html.BeginForm())
+                {
+                    for (int i = 0; i < Model.Accounts.Count; i++)
+                    {
+                        <tr class="displayer stripeme23">
+                            <td>@Html.DisplayFor(m => m.Accounts[i].Name)</td>
+                            <td>@Html.DisplayFor(m => m.Accounts[i].Type)</td>
+                            <td>@Html.DisplayFor(m => m.Accounts[i].Institution)</td>
+                            <td>@Html.DisplayFor(m => m.Accounts[i].Number)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.Accounts[i].OpeningBalance)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.Accounts[i].Balance)</td>
+                            <td>@Html.DisplayFor(m => m.Accounts[i].InterestRate)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.Accounts[i].Limit)</td>
+                            <td>@Html.DisplayFor(m => m.Accounts[i].DateOpened)</td>
+                            <td>@Html.DisplayFor(m => m.Accounts[i].DateClosed)</td>
+                            <td><button class="btn btn-xs w60 btn-warning editbutton">Edit</button></td>
+                            <td>@Html.ActionLink("Delete", "DeleteAccount", new { id = Model.Accounts[i].Id }, new { @class = "btn btn-xs w60 btn-danger deletebutton", onclick= "return confirm('Delete " + Model.Accounts[i].Name + "?');" })</td>
+                        </tr>
+
+                        <tr class="editor hidden">
+                                @Html.HiddenFor(m => m.Accounts[i].Id)
+                                <td>@Html.EditorFor(m => m.Accounts[i].Name, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                                <td>@Html.DropDownListFor(m => m.Accounts[i].TypeId, new List<SelectListItem>(ApplicationRepository.AccountTypeList), new { @class = "accountEditCell" })</td>
+                                <td>@Html.EditorFor(m => m.Accounts[i].Institution, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                                <td>@Html.EditorFor(m => m.Accounts[i].Number, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                                <td>$@Html.EditorFor(m => m.Accounts[i].OpeningBalance, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                                <td style="text-align:right; padding-right:15px;">@Html.DisplayFor(m => m.Accounts[i].Balance, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                                <td>@Html.EditorFor(m => m.Accounts[i].InterestRate, new { htmlAttributes = new { @class = "accountEditCell" } })%</td>
+                                <td>$@Html.EditorFor(m => m.Accounts[i].Limit, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                                <td>@Html.JQueryUI().DatepickerFor(m => m.Accounts[i].DateOpened, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                                <td>@Html.JQueryUI().DatepickerFor(m => m.Accounts[i].DateClosed, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                                <td><input type="submit" value="Save" class="btn btn-xs w100 btn-success" style="margin-left:30px;" formaction="@Url.Action("UpdateAccount", new { @id = i })" /></td>
+                                <td><button class="btn btn-xs w100 btn-warning canceledit" style="margin-left:30px;">Cancel Edit</button></td>
+                        </tr>
+                    }
+                } <!--form-->
+            </tbody>
+        </table>
+
+        <hr />
+
+        <div id="adder" class="hidden">
+            @using (Html.BeginForm("AddAccount", "Accounts"))
+            {                
+                <div class="row">
+                    <div class="input-group col-md-2   col-md-offset-1">
+                        <span class="input-group-addon">Name:</span>
+                        @Html.EditorFor(m => m.NewAccount.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="input-group col-md-2">
+                        <span class="input-group-addon">Institution:</span>
+                        @Html.EditorFor(m => m.NewAccount.Institution, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="input-group col-md-2">
+                        <span class="input-group-addon">Opening Balance:</span>
+                        <span class="input-group-addon addin-left">$</span>
+                        @Html.EditorFor(m => m.NewAccount.OpeningBalance, new { htmlAttributes = new { @class = "form-control has-addin-left" } })
+                    </div>
+                    <div class="input-group col-md-2">
+                        <span class="input-group-addon">Limit:</span>
+                        <span class="input-group-addon addin-left">$</span>
+                        @Html.EditorFor(m => m.NewAccount.Limit, new { htmlAttributes = new { @class = "form-control has-addin-left" } })
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-1">
+                        <input type="submit" value="Save" class="btn btn-sm w100 btn-success" style="margin-left:30px;" />
+                    </div>
+                </div>
+                <div class="row" style="margin-top:2px;">
+                    <div class="input-group col-md-2  col-md-offset-2">
+                        <span class="input-group-addon">Type:</span>
+                        @Html.DropDownListFor(m => m.NewAccount.TypeId, new List<SelectListItem>(ApplicationRepository.AccountTypeList), new { @class = "form-control" })
+                    </div>
+                    <div class="input-group col-md-2">
+                        <span class="input-group-addon">Number:</span>
+                        @Html.EditorFor(m => m.NewAccount.Number, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="input-group col-md-2">
+                        <span class="input-group-addon">Interest Rate:</span>
+                        @Html.EditorFor(m => m.NewAccount.InterestRate, new { htmlAttributes = new { @class = "form-control has-addin-right" } })
+                        <span class="input-group-addon addin-right">%</span>
+                    </div>
+                    <div class="input-group col-md-2">
+                        <span class="input-group-addon">Date Opened:</span>
+                        @Html.JQueryUI().DatepickerFor(m => m.NewAccount.DateOpened, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="col-md-1">
+                        <button id="canceladd" class="btn btn-sm w100 btn-warning" style="margin-left:30px;">Cancel Add</button>
+                    </div>
+                </div>
+                @Html.ValidationMessageFor(m => m.NewAccount)
+            }  <!--form-->
+        </div>  <!--adder-->
+
+        <div class="center">
+            <button id="addbutton" class="btn btn-xs w200 btn-success  center">Add a New Account</button>
+        </div>
+
+    </div>  <!--inner border-->
+</div>  <!--outer border-->
+
+
+@section scripts{
+    <script>
+        $('.editbutton').click(function () {
+            event.preventDefault();
+            var displayer = $(this).parent().parent();
+            var editor = displayer.nextAll('.editor:first');
+            $('.deletebutton').addClass('hidden');
+            $('.editbutton').addClass('hidden');
+            displayer.addClass('hidden');
+            editor.removeClass('hidden');
+        });
+
+        $('.canceledit').click(function () {
+            event.preventDefault();
+            var editor = $(this).parent().parent();
+            var displayer = editor.prevAll('.displayer:first');
+            $('.deletebutton').removeClass('hidden');
+            $('.editbutton').removeClass('hidden');
+            displayer.removeClass('hidden');
+            editor.addClass('hidden');
+        });
+
+        $('#addbutton').click(function () {
+            event.preventDefault();
+            $('#adder').removeClass('hidden');
+            $('#addbutton').addClass('hidden');
+        });
+
+        $('#canceladd').click(function () {
+            event.preventDefault();
+            $('#adder').addClass('hidden');
+            $('#addbutton').removeClass('hidden');
+        });
+    </script>
+}

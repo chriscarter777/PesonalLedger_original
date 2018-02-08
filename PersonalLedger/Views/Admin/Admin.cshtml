@@ -1,0 +1,25 @@
+﻿@using PersonalLedger.Repositories;
+@using PersonalLedger.DomainModels;
+@using PersonalLedger.ViewModels;
+
+@model AdminViewModel
+
+@{
+    ViewBag.Title = "Admin";
+}
+
+<div class="outerBorder">
+    <div class="innerBorder">
+        <table style="width:100%;">
+            <caption>Administration</caption>
+        </table>
+    </div>
+</div>
+
+<div id="content"></div>
+
+
+
+@section scripts{
+    <script src="@Url.Content("~/Scripts/AdminComponents.jsx")"></script>
+}

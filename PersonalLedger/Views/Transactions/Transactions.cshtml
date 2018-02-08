@@ -1,0 +1,200 @@
+﻿@model PersonalLedger.ViewModels.TransactionsViewModel
+@using PersonalLedger.Repositories;
+@using PersonalLedger.DomainModels;
+
+@{
+    ViewBag.Title = "Transactions";
+}
+
+<div class="outerBorder">
+    <div class="innerBorder">
+        <table style="margin:auto;">
+            <caption>Transactions</caption>
+            <thead>
+                <tr>
+                    <th>
+                        <a href="#" class="tableHeadCell">&nbsp;</a>
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "reconciled", "R" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "tax", "Tax" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "date", "Date" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "check", "Check" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "category", "Category" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "payee", "Payee" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "from", "From" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "to", "To" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "amount", "Amount" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "memo", "Memo" })
+                    </th>
+                    <th colspan="2">
+                        <a href="#" class="tableHeadCell">&nbsp;</a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Transactions.Count; i++)
+                {
+                    <tr class="displayer stripeme23">
+                        <td>
+                            @if (Model.Transactions[i].Flag0)
+                            {
+                                <span class="flag flag0"></span>
+                            }
+                            else
+                            {
+                                <span class="flag flagfalse"></span>
+                            }
+                            @if (Model.Transactions[i].Flag1)
+                            {
+                                <span class="flag flag1"></span>
+                            }
+                            else
+                            {
+                                <span class="flag flagfalse"></span>
+                            }
+                            @if (Model.Transactions[i].Flag2)
+                            {
+                                <span class="flag flag2"></span>
+                            }
+                            else
+                            {
+                                <span class="flag flagfalse"></span>
+                            }
+                            @if (Model.Transactions[i].Flag3)
+                            {
+                                <span class="flag flag3"></span>
+                            }
+                            else
+                            {
+                                <span class="flag flagfalse"></span>
+                            }
+                            @if (Model.Transactions[i].Flag4)
+                            {
+                                <span class="flag flag4"></span>
+                            }
+                            else
+                            {
+                                <span class="flag flagfalse"></span>
+                            }
+                            @if (Model.Transactions[i].Flag5)
+                            {
+                                <span class="flag flag5"></span>
+                            }
+                            else
+                            {
+                                <span class="flag flagfalse"></span>
+                            }
+                            @if (Model.Transactions[i].Flag6)
+                            {
+                                <span class="flag flag6"></span>
+                            }
+                            else
+                            {
+                                <span class="flag flagfalse"></span>
+                            }
+                            @if (Model.Transactions[i].Flag7)
+                            {
+                                <span class="flag flag7"></span>
+                            }
+                            else
+                            {
+                                <span class="flag flagfalse"></span>
+                            }
+                        </td>
+                        <td style="text-align:center;">
+                            @if (Model.Transactions[i].Reconciled)
+                            {
+                                @Html.ActionLink(HttpUtility.HtmlDecode("&#10004;"), "UnreconcileTransaction", null, new { @class = "btn btn-xxs w60 btn-clear", @id = Model.Transactions[i].Id })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Reconcile", "ReconcileTransaction", null, new { @class = "btn btn-xxs w60 btn-success", @id = Model.Transactions[i].Id })
+                            }
+                        </td>
+                        <td style="text-align:center;">
+                            @if (Model.Transactions[i].Tax)
+                            {
+                                <span>&#10004;</span>
+                            }
+                            else
+                            {
+                                <span>&nbsp;</span>
+                            }
+                        </td>
+                        <td>@Html.DisplayFor(m => m.Transactions[i].OnDate)</td>
+                        <td>@Html.DisplayFor(m => m.Transactions[i].CheckNo)</td>
+                        <td>@Html.DisplayFor(m => m.Transactions[i].Category)</td>
+                        <td>@Html.DisplayFor(m => m.Transactions[i].Payee)</td>
+                        <td>@Html.DisplayFor(m => m.Transactions[i].FromAccount)</td>
+                        <td>@Html.DisplayFor(m => m.Transactions[i].ToAccount)</td>
+                        <td class="currencyCell">@Html.DisplayFor(m => m.Transactions[i].Amount)</td>
+                        <td>@Html.DisplayFor(m => m.Transactions[i].Memo)</td>
+                        <td><button class="btn btn-xxs w60 btn-warning editbutton" data-item="@Model.Transactions[i].Id">Edit</button></td>
+                        <td>@Html.ActionLink("Delete", "DeleteTransaction", new { id = Model.Transactions[i].Id }, new { @class = "btn btn-xxs w60 btn-danger deletebutton", onclick = "return confirm('Delete transaction " + String.Format("{0:C}", Model.Transactions[i].Amount) + " on " + String.Format("{0:MM/dd/yyyy}", Model.Transactions[i].OnDate) + "?');" })</td>
+                    </tr>
+
+                    <tr class="editrow editor hidden"></tr>
+                }  <!--transaction iteration-->
+
+                <tr class="spacerow">
+                    <td colspan="11" style="background:white;">&nbsp;</td>
+                </tr>
+            </tbody>
+        </table>
+
+        @Html.Partial("_AddTransaction")
+
+    </div>  <!--inner border-->
+</div>  <!--outer border-->
+
+
+
+@section scripts{
+    <script src="@Url.Content("~/Scripts/TransactionComponents.jsx")"></script>
+    <script>
+    $('.editbutton').click(function () {
+        event.preventDefault();
+        var displayer = $(this).parent().parent();
+        var editor = displayer.nextAll(".editor:first");
+        var itemId = $(this).data('item');
+        $('.deletebutton').addClass('hidden');
+        $('.editbutton').addClass('hidden');
+        displayer.addClass('hidden');
+        editor.removeClass('hidden');
+        var ajaxUrl = "@Url.Action("EditTransaction")" + "/" + itemId;
+        editor.load(ajaxUrl, function () {
+            $('#canceledit', this).click(function () {
+                event.preventDefault();
+                var editor = $(this).parent().parent();
+                var displayer = editor.prevAll(".displayer:first");
+                var itemId = $(this).data('item');
+                $('.deletebutton').removeClass('hidden');
+                $('.editbutton').removeClass('hidden');
+                displayer.removeClass('hidden');
+                editor.addClass('hidden');
+                editor.clear();
+            });
+        });
+    });
+    </script>
+}
+

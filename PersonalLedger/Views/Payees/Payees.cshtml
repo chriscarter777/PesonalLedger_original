@@ -1,0 +1,132 @@
+﻿@model PersonalLedger.ViewModels.PayeesViewModel
+@using PersonalLedger.Repositories;
+@using PersonalLedger.DomainModels;
+
+@{
+    ViewBag.Title = "Payees";
+}
+
+<div class="outerBorder">
+    <div class="innerBorder">
+        <table style="margin:auto;">
+            <caption>Payees</caption>
+            <thead>
+                <tr>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "name", "Name" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "category", "Category" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "trancount", "Count" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "firstdate", HttpUtility.HtmlDecode("First &#128197;") })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "firstamount", "First $" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "lastdate", HttpUtility.HtmlDecode("Last &#128197;") })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "lastamount", "Last $" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "mintran", "Min $" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "maxtran", "Max $" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "meantran", "Avg $" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "balance", "Balance" })
+                    </th>
+                    <th colspan="2">
+                        <a href="#" class="tableHeadCell">&nbsp;</a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @using (Html.BeginForm())
+                {
+                    for (int i = 0; i < Model.Payees.Count; i++)
+                    {
+                        <tr class="displayer stripeme23">
+                            <td>@Html.DisplayFor(m => m.Payees[i].Name)</td>
+                            <td>@Html.DisplayFor(m => m.Payees[i].TranLastCategory)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.Payees[i].TranCount)</td>
+                            <td>@Html.DisplayFor(m => m.Payees[i].TranFirstDate)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.Payees[i].TranFirstAmount)</td>
+                            <td>@Html.DisplayFor(m => m.Payees[i].TranLastDate)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.Payees[i].TranLastAmount)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.Payees[i].TranMin)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.Payees[i].TranMax)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.Payees[i].TranMean)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.Payees[i].Balance)</td>
+                            <td><button class="btn btn-xs w60 btn-warning editbutton">Edit</button></td>
+                            <td>@Html.ActionLink("Delete", "DeletePayee", new { id = Model.Payees[i].Id }, new { @class = "btn btn-xs w60 btn-danger deletebutton", onclick = "return confirm('Delete " + Model.Payees[i].Name + "?');" })</td>
+                        </tr>
+
+                        <tr class="editor hidden">
+                            @Html.HiddenFor(m => m.Payees[i].Id)
+                            <td>@Html.EditorFor(m => m.Payees[i].Name)</td>
+                            <td>@Html.DisplayFor(m => m.Payees[i].TranLastCategory)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.Payees[i].TranCount)</td>
+                            <td>@Html.DisplayFor(m => m.Payees[i].TranFirstDate)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.Payees[i].TranFirstAmount)</td>
+                            <td>@Html.DisplayFor(m => m.Payees[i].TranLastDate)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.Payees[i].TranLastAmount)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.Payees[i].TranMin)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.Payees[i].TranMax)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.Payees[i].TranMean)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.Payees[i].Balance)</td>
+                            <td><input type="submit" value="Save" class="btn btn-xs w100 btn-success" style="margin-left:30px;" formaction="@Url.Action("UpdatePayee", new { @id = i })" /></td>
+                            <td><button class="btn btn-xs w100 btn-warning canceledit" style="margin-left:30px;">Cancel Edit</button></td>
+                        </tr>
+                    }
+                } <!--form-->
+            </tbody>
+        </table>
+    </div>  <!--inner border-->
+</div>  <!--outer border-->
+
+
+@section scripts{
+    <script>
+        $('.editbutton').click(function () {
+            event.preventDefault();
+            var displayer = $(this).parent().parent();
+            var editor = displayer.nextAll('.editor:first');
+            $('.deletebutton').addClass('hidden');
+            $('.editbutton').addClass('hidden');
+            displayer.addClass('hidden');
+            editor.removeClass('hidden');
+        });
+
+        $('.canceledit').click(function () {
+            event.preventDefault();
+            var editor = $(this).parent().parent();
+            var displayer = editor.prevAll('.displayer:first');
+            $('.deletebutton').removeClass('hidden');
+            $('.editbutton').removeClass('hidden');
+            displayer.removeClass('hidden');
+            editor.addClass('hidden');
+        });
+
+        $('#addbutton').click(function () {
+            event.preventDefault();
+            $('#adder').removeClass('hidden');
+            $('#addbutton').addClass('hidden');
+        });
+
+        $('#canceladd').click(function () {
+            event.preventDefault();
+            $('#adder').addClass('hidden');
+            $('#addbutton').removeClass('hidden');
+        });
+    </script>
+}

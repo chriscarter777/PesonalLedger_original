@@ -1,0 +1,2 @@
+C:\Users\Chris\Documents\Source\PersonalLedger\PersonalLedger.Tests\obj\Debug\PersonalLedger.Tests.csprojResolveAssemblyReference.cache
+C:\Users\Chris\Documents\Source\PersonalLedger\PersonalLedger.Tests\obj\Debug\PersonalLedger.Tests.csproj.CoreCompileInputs.cache

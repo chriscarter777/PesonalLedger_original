@@ -1,0 +1,244 @@
+﻿@model PersonalLedger.ViewModels.ReportsViewModel
+@using PersonalLedger.Repositories;
+@using PersonalLedger.DomainModels;
+
+@{
+    ViewBag.Title = "Reports";
+}
+
+<div class="outerBorder">
+    <div class="innerBorder">
+        <table style="margin:auto;">
+            <caption>Reports</caption>
+            <thead>
+                <tr>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "name", "Name" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "type", "Type" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "accounts", "Accounts" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "categories", "Categories" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "dayscope", "Past x Days" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "mindate", "From Date" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "maxdate", "To Date" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "minamount", "From $" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "maxamount", "To $" })
+                    </th>
+                    <th>
+                        @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "tax", "Tax" })
+                    </th>
+                    <th colspan="3">
+                        <a href="#" class="tableHeadCell">&nbsp;</a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @using (Html.BeginForm())
+                {
+                    for (int i = 0; i < Model.Reports.Count; i++)
+                    {
+                        <tr class="displayer stripeme21">
+                            <td>@Html.DisplayFor(m => m.Reports[i].Name)</td>
+                            <td>@Html.DisplayFor(m => m.Reports[i].Type)</td>
+                            <td>
+                                @if (Model.Reports[i].Accounts == null)
+                                {
+                                    <span>---</span>
+                                }
+                                else
+                                {
+                                    <ul style="list-style:none; padding-left:0;">
+                                        @foreach (string a in Model.Reports[i].Accounts)
+                                        {
+                                            <li>@a</li>
+                                        }
+                                    </ul>
+                                }
+                            </td>
+                            <td>
+                                @if (Model.Reports[i].Categories == null)
+                                {
+                                    <span>---</span>
+                                }
+                                else
+                                {
+                                    <ul style="list-style:none; padding-left:0;">
+                                        @foreach (string c in Model.Reports[i].Categories)
+                                        {
+                                            <li>@c</li>
+                                        }
+                                    </ul>
+                                }
+                            </td>
+                            <td>@Html.DisplayFor(m => m.Reports[i].DayScope)</td>
+                            <td>@Html.DisplayFor(m => m.Reports[i].MinDate)</td>
+                            <td>@Html.DisplayFor(m => m.Reports[i].MaxDate)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.Reports[i].MinAmount)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.Reports[i].MaxAmount)</td>
+                            <td style="text-align:center;">
+                                @if (Model.Reports[i].TaxOnly)
+                                {
+                                    <span>&#10004;</span>
+                                }
+                                else
+                                {
+                                    <span>&nbsp;</span>
+                                }
+                            </td>
+                            <td>@Html.ActionLink("Run", "RunReport", new { id = Model.Reports[i].Id }, new { @class = "btn btn-xs w60 btn-success runbutton" })</td>
+                            <td><button class="btn btn-xs w60 btn-warning editbutton">Edit</button></td>
+                            <td>@Html.ActionLink("Delete", "DeleteReport", new { id = Model.Reports[i].Id }, new { @class = "btn btn-xs w60 btn-danger deletebutton", onclick = "return confirm('Delete " + Model.Reports[i].Name + "?');" })</td>
+                        </tr>
+
+                        <tr class="editor hidden">
+                            @Html.HiddenFor(m => m.Reports[i].Id)
+                            <td>@Html.EditorFor(m => m.Reports[i].Name, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                            <td>@Html.DropDownListFor(m => m.Reports[i].TypeId, new List<SelectListItem>(ApplicationRepository.SL_ReportTypes), new { @class = "accountEditCell" })</td>
+                            <td>@Html.EditorFor(m => m.Reports[i].AccountIds, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                            <td>@Html.EditorFor(m => m.Reports[i].CategoryIds, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                            <td>@Html.EditorFor(m => m.Reports[i].DayScope, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                            <td>@Html.JQueryUI().DatepickerFor(m => m.Reports[i].MinDate, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                            <td>@Html.JQueryUI().DatepickerFor(m => m.Reports[i].MaxDate, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                            <td>@Html.EditorFor(m => m.Reports[i].MinAmount, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                            <td>@Html.EditorFor(m => m.Reports[i].MaxAmount, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                            <td>@Html.EditorFor(m => m.Reports[i].TaxOnly, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                            <td><input type="submit" value="Save" class="btn btn-xs w100 btn-success" style="margin-left:30px;" formaction="@Url.Action("UpdateReport", new { @id = i })" /></td>
+                            <td><button class="btn btn-xs w100 btn-warning canceledit" style="margin-left:30px;">Cancel Edit</button></td>
+                        </tr>
+                    }
+                } <!--form-->
+            </tbody>
+        </table>
+
+        <hr />
+
+        <div id="adder" class="hidden">
+            @using (Html.BeginForm("AddReport", "Reports"))
+            {
+                <div class="row">
+                    <div class="input-group col-md-2">
+                        <span class="input-group-addon">Name:</span>
+                        @Html.EditorFor(m => m.NewReport.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="input-group col-md-2">
+                        <span class="input-group-addon">Accounts:</span>
+                        @Html.ListBoxFor(m => m.NewReport.AccountIds, new List<SelectListItem>((List<SelectListItem>)Session["SL_Accounts"]), new { @class = "form-control" })
+                    </div>
+                    <div class="input-group col-md-2">
+                        <span class="input-group-addon">From Date:</span>
+                        @Html.JQueryUI().DatepickerFor(m => m.NewReport.MinDate, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="input-group col-md-2">
+                        <span class="input-group-addon">From:</span>
+                        <span class="input-group-addon addin-left">$</span>
+                        @Html.EditorFor(m => m.NewReport.MinAmount, new { htmlAttributes = new { @class = "form-control has-addin-left" } })
+                    </div>
+                    <div class="input-group col-md-2">
+                        <span class="input-group-addon">Past x Days</span>
+                        @Html.EditorFor(m => m.NewReport.DayScope, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="col-md-1">
+                        <input type="submit" value="Save" class="btn btn-sm w100 btn-success" style="margin-left:30px;" />
+                    </div>
+                </div>
+                <div class="row" style="margin-top:2px;">
+                    <div class="input-group col-md-2">
+                        <span class="input-group-addon">Type:</span>
+                        @Html.DropDownListFor(m => m.NewReport.TypeId, new List<SelectListItem>(ApplicationRepository.SL_ReportTypes), new { @class = "form-control" })
+                    </div>
+                    <div class="input-group col-md-2">
+                        <span class="input-group-addon">Categories:</span>
+                        @Html.ListBoxFor(m => m.NewReport.CategoryIds, new List<SelectListItem>((List<SelectListItem>)Session["SL_Categories"]), new { @class = "form-control" })
+                    </div>
+                    <div class="input-group col-md-2">
+                        <span class="input-group-addon">To Date:</span>
+                        @Html.JQueryUI().DatepickerFor(m => m.NewReport.MaxDate, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="input-group col-md-2">
+                        <span class="input-group-addon">To:</span>
+                        <span class="input-group-addon addin-left">$</span>
+                        @Html.EditorFor(m => m.NewReport.MaxAmount, new { htmlAttributes = new { @class = "form-control has-addin-left" } })
+                    </div>
+                    <div class="input-group col-md-2">
+                        <span class="input-group-addon">Tax:</span>
+                        @Html.EditorFor(m => m.NewReport.TaxOnly, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="col-md-1">
+                        <button id="canceladd" class="btn btn-sm w100 btn-warning" style="margin-left:30px;">Cancel Add</button>
+                    </div>
+                </div>
+            }
+        </div>  <!--adder-->
+
+        <div class="center">
+            <button id="addbutton" class="btn btn-xs w200 btn-success  center">Add a New Report</button>
+        </div>
+
+        <div class="spacediv"></div>
+
+        <div class="flexRow">
+            @Html.ActionLink("Income/Expense Past Month", "RunIE30", null, new { @class = "btn btn-xs w200 btn-success" })
+            @Html.ActionLink("Income/Expense Past 90 Days", "RunIE90", null, new { @class = "btn btn-xs w200 btn-success" })
+            @Html.ActionLink("Income/Expense Past Year", "RunIE365", null, new { @class = "btn btn-xs w200 btn-success" })
+            @Html.ActionLink("Net Worth Past Year", "RunRNW365", null, new { @class = "btn btn-xs w200 btn-success" })
+            @Html.ActionLink("Net Worth All Time", "RunNW", null, new { @class = "btn btn-xs w200 btn-success" })
+            @Html.ActionLink("Cash Flow Past Year", "RunCF365", null, new { @class = "btn btn-xs w200 btn-success" })
+            @Html.ActionLink("Cash Flow All Time", "RunCF", null, new { @class = "btn btn-xs w200 btn-success" })
+        </div>
+
+    </div>  <!--inner border-->
+</div>  <!--outer border-->
+
+
+@section scripts{
+    <script>
+        $('.editbutton').click(function () {
+            event.preventDefault();
+            var displayer = $(this).parent().parent();
+            var editor = displayer.nextAll('.editor:first');
+            $('.runbutton').addClass('hidden');
+            $('.deletebutton').addClass('hidden');
+            $('.editbutton').addClass('hidden');
+            displayer.addClass('hidden');
+            editor.removeClass('hidden');
+        });
+
+        $('.canceledit').click(function () {
+            event.preventDefault();
+            var editor = $(this).parent().parent();
+            var displayer = editor.prevAll('.displayer:first');
+            $('.runbutton').removeClass('hidden');
+            $('.deletebutton').removeClass('hidden');
+            $('.editbutton').removeClass('hidden');
+            displayer.removeClass('hidden');
+            editor.addClass('hidden');
+        });
+
+        $('#addbutton').click(function () {
+            event.preventDefault();
+            $('#adder').removeClass('hidden');
+            $('#addbutton').addClass('hidden');
+        });
+
+        $('#canceladd').click(function () {
+            event.preventDefault();
+            $('#adder').addClass('hidden');
+            $('#addbutton').removeClass('hidden');
+        });
+    </script>
+}

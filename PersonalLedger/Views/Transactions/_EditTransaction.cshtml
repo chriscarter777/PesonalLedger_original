@@ -1,0 +1,63 @@
+﻿@model PersonalLedger.ViewModels.TransactionsViewModel
+@using PersonalLedger.Repositories;
+
+    @using (Html.BeginForm("UpdateTransaction", "Transactions"))
+    {
+        @Html.HiddenFor(m => m.EditTransaction.Id)
+        <td>
+            <span class="flagwrapper flag0">
+                @Html.CheckBoxFor(m => m.EditTransaction.Flag0)
+            </span>
+            <span class="flagwrapper flag1">
+                @Html.CheckBoxFor(m => m.EditTransaction.Flag1)
+            </span>
+            <span class="flagwrapper flag2">
+                @Html.CheckBoxFor(m => m.EditTransaction.Flag2)
+            </span>
+            <span class="flagwrapper flag3">
+                @Html.CheckBoxFor(m => m.EditTransaction.Flag3)
+            </span>
+            <span class="flagwrapper flag4">
+                @Html.CheckBoxFor(m => m.EditTransaction.Flag4)
+            </span>
+            <span class="flagwrapper flag5">
+                @Html.CheckBoxFor(m => m.EditTransaction.Flag5)
+            </span>
+            <span class="flagwrapper flag6">
+                @Html.CheckBoxFor(m => m.EditTransaction.Flag6)
+            </span>
+            <span class="flagwrapper flag7">
+                @Html.CheckBoxFor(m => m.EditTransaction.Flag7)
+            </span>
+        </td>
+        <td style="text-align:center;">
+            @Html.EditorFor(m => m.EditTransaction.Reconciled)
+        </td>
+        <td style="text-align:center;">
+            @Html.EditorFor(m => m.EditTransaction.Tax)
+        </td>
+        <td>
+            @Html.JQueryUI().DatepickerFor(m => m.EditTransaction.OnDate)
+        </td>
+        <td>
+            @Html.DropDownListFor(m => m.EditTransaction.CategoryId, new List<SelectListItem>((List<SelectListItem>)Session["SL_Categories"]), new { @class = "newcategoryselect" })
+        </td>
+        <td>
+            @Html.EditorFor(m => m.EditTransaction.PayeeId, new List<SelectListItem>((List<SelectListItem>)Session["SL_Payees"]))
+        </td>
+        <td>
+            @Html.DropDownListFor(m => m.EditTransaction.FromAccountId, new List<SelectListItem>((List<SelectListItem>)Session["SL_Accounts"]))
+        </td>
+        <td>
+            @Html.DropDownListFor(m => m.EditTransaction.ToAccountId, new List<SelectListItem>((List<SelectListItem>)Session["SL_Accounts"]))
+        </td>
+        <td>
+            @Html.EditorFor(m => m.EditTransaction.Amount)
+        </td>
+        <td>
+            @Html.EditorFor(m => m.EditTransaction.Memo, new { htmlAttributes = new { @style = "width:100%;" } })
+        </td>
+        <td><input type="submit" value="Save" class="btn btn-xs w100 btn-success" /></td>
+        <td><button id="canceledit" class="btn btn-xs w100 btn-warning">Cancel Edit</button></td>
+    }  <!--edit form-->
+

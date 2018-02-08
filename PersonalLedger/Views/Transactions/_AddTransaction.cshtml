@@ -1,0 +1,186 @@
+﻿@model PersonalLedger.ViewModels.TransactionsViewModel
+@using PersonalLedger.Repositories;
+@using PersonalLedger.DomainModels;
+
+@using (Html.BeginForm("AddTransaction", "Transactions"))
+{
+    @Html.HiddenFor(m => m.NewTransaction.PayeeId)
+    <div class="addTran">
+        <div class="col-md-1 col-md-offset-1" style="text-align:right; margin-top:10px;">
+            <span class="flagwrapper flag0">
+                @Html.CheckBoxFor(m => m.NewTransaction.Flag0)
+            </span>
+            <span class="flagwrapper flag1">
+                @Html.CheckBoxFor(m => m.NewTransaction.Flag1)
+            </span>
+            <span class="flagwrapper flag2">
+                @Html.CheckBoxFor(m => m.NewTransaction.Flag2)
+            </span>
+            <span class="flagwrapper flag3">
+                @Html.CheckBoxFor(m => m.NewTransaction.Flag3)
+            </span>
+            <span class="flagwrapper flag4">
+                @Html.CheckBoxFor(m => m.NewTransaction.Flag4)
+            </span>
+            <span class="flagwrapper flag5">
+                @Html.CheckBoxFor(m => m.NewTransaction.Flag5)
+            </span>
+            <span class="flagwrapper flag6">
+                @Html.CheckBoxFor(m => m.NewTransaction.Flag6)
+            </span>
+            <span class="flagwrapper flag7">
+                @Html.CheckBoxFor(m => m.NewTransaction.Flag7)
+            </span>
+            <br />
+            <label>Reconciled</label>
+            @Html.EditorFor(m => m.NewTransaction.Reconciled)
+            <br />
+            <label>Tax</label>
+            @Html.EditorFor(m => m.NewTransaction.Tax)
+        </div>  <!--column-->
+
+        <div class="col-md-1" style=" margin-top:10px;">
+            <button id="transferbtn" class="btn btn-xs btn-info w80" style="margin:5px;">Transfer</button>
+            <br />
+            <button id="adjustmentbtn" class="btn btn-xs btn-info w80" style="margin:5px;">Adjustment</button>
+        </div>  <!--column-->
+
+        <div class="col-md-7">
+            <div class="row">
+                <div class="col-md-2">
+                    <label>Date</label><br />
+                    @Html.JQueryUI().DatepickerFor(m => m.NewTransaction.OnDate)
+                </div>
+                <div class="col-md-3">
+                    <label>Category</label>
+                    <br />
+                    @Html.DropDownListFor(m => m.NewTransaction.CategoryId, new List<SelectListItem>((List<SelectListItem>)Session["SL_AddCategories"]))
+                </div>
+                <div id="payee" class="col-md-3">
+                    <label>Payee</label>
+                    <br />
+                    @Html.JQueryUI().AutocompleteFor(m => m.NewTransaction.Payee, (string)Session["Payees"])
+                </div>
+                <div id="fromAcct" class="col-md-2">
+                    <label>From Account</label>
+                    <br />
+                    @Html.DropDownListFor(m => m.NewTransaction.FromAccountId, new List<SelectListItem>((List<SelectListItem>)Session["SL_Accounts"]), "")
+                </div>
+                <div id="toAcct" class="col-md-2">
+                    <label>To Account</label>
+                    <br />
+                    @Html.DropDownListFor(m => m.NewTransaction.ToAccountId, new List<SelectListItem>((List<SelectListItem>)Session["SL_Accounts"]), "")
+                </div>
+                <div class="col-md-2">
+                    <label>Amount</label><br />
+                    <div>
+                        $@Html.EditorFor(m => m.NewTransaction.Amount, new { htmlAttributes = new { @style = "width:calc(100% - 1em); text-align:right;" } })
+                    </div>
+
+                </div>
+            </div>  <!--row-->
+
+            <div class="row">
+                <div class="col-md-12">
+                    <label>Memo</label><br />
+                    <input type="text" name="NewTransaction.Memo" style="width:100%;" />
+                </div>
+            </div>  <!--row-->
+        </div>  <!--column-->
+
+        <div class="col-md-1">
+            <div>
+                <input type="submit" value="Save" class="btn w100 btn-success" style="margin:20px 0; height:80px;" />
+            </div>
+        </div>  <!--column-->
+
+    </div> <!--addTran-->
+}  <!--add form-->
+
+
+@section scripts{
+    <script>
+        function showAdjustment() {
+            $('#payee').hide();
+            $('#fromAcct').hide();
+            $('#toAcct').show();
+        };
+
+        function showExpense() {
+            $('#payee').show();
+            $('#fromAcct').show();
+            $('#toAcct').hide();
+        };
+
+        function showIncome() {
+            $('#payee').show();
+            $('#fromAcct').hide();
+            $('#toAcct').show();
+        };
+
+        function showTransfer() {
+            $('#payee').hide();
+            $('#fromAcct').show();
+            $('#toAcct').show();
+        };
+
+        $(document).ready(function () {
+            showExpense();
+        });
+
+        $('#NewTransaction_CategoryId').change(function () {
+            var catSelected = $(this).val();
+            if (catSelected != null) {
+                $.ajax({
+                    url: '/Transactions/CategoryType/' + catSelected,
+                    success: function (data) {
+                        var catType = data;
+                        if (catType == 1) {
+                            showAdjustment();
+                        }
+                        else if (catType == 3) {
+                            showIncome();
+                        }
+                        else if (catType == 4) {
+                            showExpense();
+                        }
+                        else {
+                            showTransfer();
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#NewTransaction_Payee').change(function () {
+            alert('Here we go');
+            var payeeSelected = $(this).val();
+            if (payeeSelected != null) {
+                var payeedata = $.ajax({ url: '/Transactions/PayeeData/' + payeeSelected });
+                var amount = payeedata.amount;
+                var catId = payeedata.catId;
+                var payeeId = payeedata.id;
+                alert(amount + " : " + catId + " : " + payeeId);
+                $('#NewTransaction_Amount').val = amount;
+                if (payeeId > 0) {
+                    $('#NewTransaction_CategoryId').val = catId;
+                    $('#NewTransaction_PayeeId').val = payeeId;
+                }
+            }
+        });
+
+        $('#adjustmentbtn').click(function () {
+            event.preventDefault();
+            $('#NewTransaction_CategoryId').val(1);
+            showAdjustment();
+        });
+
+        $('#transferbtn').click(function () {
+            event.preventDefault();
+            $('#NewTransaction_CategoryId').val(2);
+            showTransfer();
+        });
+    </script>
+}
+
+

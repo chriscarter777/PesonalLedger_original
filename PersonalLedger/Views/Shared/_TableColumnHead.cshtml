@@ -1,0 +1,16 @@
+﻿@model List<string>
+
+@if (Model[0] == Model[1])
+{
+    <a href="@Url.Action("Sort", new { @id = Model[1] + "_D" })" class="tableHeadCell-active">@Model[2] &#9650;</a>
+}
+else if (Model[0] == Model[1] + "_D")
+{
+    <a href="@Url.Action("Sort", new { @id = Model[1] })" class="tableHeadCell-active">@Model[2] &#9660;</a>
+}
+else
+{
+    <a href="@Url.Action("Sort", new { @id = Model[1] })" class="tableHeadCell">@Model[2] &#9650;</a>
+}
+
+

@@ -1,0 +1,249 @@
+﻿@using PersonalLedger.Repositories;
+@using PersonalLedger.DomainModels;
+@using PersonalLedger.ViewModels;
+
+@model AdminViewModel
+
+@{
+    ViewBag.Title = "Admin";
+}
+
+<div class="outerBorder">
+    <div class="innerBorder">
+        <table style="width:100%;">
+            <caption>Administration</caption>
+        </table>
+    </div>
+</div>
+
+<div class="tabbed-tabs">
+    <div data-tab="1" class="tabbed-tab tabbed-active">Accounts</div>
+    <div data-tab="2" class="tabbed-tab">Categories</div>
+    <div data-tab="3" class="tabbed-tab">Payees</div>
+    <div data-tab="4" class="tabbed-tab">Reports</div>
+    <div data-tab="5" class="tabbed-tab">Transactions</div>
+</div>
+<div class="tabbed-pages">
+    <div data-page="1" class="tabbed-page">
+        <div class="adminGroup">
+            <h3>Accounts</h3>
+            <div class="adminTable">
+                @if (Model.Accounts != null)
+                {
+                    <div class="adminHeader">
+                        <div class="adminField">Id</div>
+                        <div class="adminField">Type</div>
+                        <div class="adminField">Name</div>
+                        <div class="adminField">Number</div>
+                    </div>
+                    <div class="adminBody">
+                        @foreach (Account a in Model.Accounts)
+                        {
+                            <div class="adminItem">
+                                <div class="adminField">@a.Id</div>
+                                <div class="adminField">@a.Type</div>
+                                <div class="adminField">@a.Name</div>
+                                <div class="adminField">@a.Number</div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div data-page="2" class="tabbed-page" hidden>
+        <div class="adminGroup">
+            <h3>Categories</h3>
+            <div class="adminTable">
+                <div class="adminHeader">
+                    <div class="adminField">Id</div>
+                    <div class="adminField">Name</div>
+                    <div class="adminField">Tax</div>
+                    <div class="adminField">Type</div>
+                </div>
+                <div class="adminBody">
+                    @if (Model.OtherCategories != null)
+                    {
+                        foreach (Category c in Model.OtherCategories)
+                        {
+                            <div class="adminItem">
+                                <div class="adminField">@c.Id</div>
+                                <div class="adminField">@c.Name</div>
+                                <div class="adminField">
+                                    @if (c.Tax)
+                                    {
+                                        <span>&#10004;</span>
+                                    }
+                                    else
+                                    {
+                                        <span>&nbsp;</span>
+                                    }
+                                </div>
+                                <div class="adminField">@ApplicationRepository.CategoryType(c.Type)</div>
+                            </div>
+                        }
+                    }
+                    <div class="adminItem">
+                        <div class="adminDivider"></div>
+                        <div class="adminDivider"></div>
+                        <div class="adminDivider"></div>
+                        <div class="adminDivider"></div>
+                    </div>
+
+                    @if (Model.IncomeCategories != null)
+                    {
+                        foreach (Category c in Model.IncomeCategories)
+                        {
+                            <div class="adminItem">
+                                <div class="adminField">@c.Id</div>
+                                <div class="adminField">@c.Name</div>
+                                <div class="adminField">
+                                    @if (c.Tax)
+                                    {
+                                        <span>&#10004;</span>
+                                    }
+                                    else
+                                    {
+                                        <span>&nbsp;</span>
+                                    }
+                                </div>
+                                <div class="adminField">Income</div>
+                            </div>
+                        }
+                    }
+
+                    <div class="adminItem">
+                        <div class="adminDivider"></div>
+                        <div class="adminDivider"></div>
+                        <div class="adminDivider"></div>
+                        <div class="adminDivider"></div>
+                    </div>
+
+                    @if (Model.ExpenseCategories != null)
+                    {
+                        foreach (Category c in Model.ExpenseCategories)
+                        {
+                            <div class="adminItem">
+                                <div class="adminField">@c.Id</div>
+                                <div class="adminField">@c.Name</div>
+                                <div class="adminField">
+                                    @if (c.Tax)
+                                    {
+                                        <span>&#10004;</span>
+                                    }
+                                    else
+                                    {
+                                        <span>&nbsp;</span>
+                                    }
+                                </div>
+                                <div class="adminField">Expense</div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div data-page="3" class="tabbed-page" hidden>
+        <div class="adminGroup">
+            <h3>Payees</h3>
+            <div class="adminTable">
+                @if (Model.Payees != null)
+                {
+                    <div class="adminHeader">
+                        <div class="adminField">Id</div>
+                        <div class="adminField">Name</div>
+                    </div>
+                    <div class="adminBody">
+                        @foreach (Payee p in Model.Payees)
+                        {
+                            <div class="adminItem">
+                                <div class="adminField">@p.Id</div>
+                                <div class="adminField">@p.Name</div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div data-page="4" class="tabbed-page" hidden>
+        <div class="adminGroup">
+            <h3>Reports</h3>
+            <div class="adminTable">
+                @if (Model.Reports != null)
+                {
+                    <div class="adminHeader">
+                        <div class="adminField">Id</div>
+                        <div class="adminField">Name</div>
+                        <div class="adminField">Type</div>
+                        <div class="adminField">TaxOnly</div>
+                    </div>
+                    <div class="adminBody">
+                        @foreach (Report r in Model.Reports)
+                        {
+                            <div class="adminItem">
+                                <div class="adminField">@r.Id</div>
+                                <div class="adminField">@r.Name</div>
+                                <div class="adminField">@r.Type</div>
+                                <div class="adminField">
+                                    @if (r.TaxOnly)
+                                    {
+                                        <span>&#10004;</span>
+                                    }
+                                    else
+                                    {
+                                        <span>&nbsp;</span>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div data-page="5" class="tabbed-page" hidden>
+        <div class="adminGroup">
+            <h3>Transactions</h3>
+            <div class="adminTable">
+                @if (Model.Transactions != null)
+                {
+                    <div class="adminHeader">
+                        <div class="adminField">Id</div>
+                        <div class="adminField">Date</div>
+                        <div class="adminField">Payee</div>
+                        <div class="adminField">From</div>
+                        <div class="adminField">To</div>
+                        <div class="adminField">Amount</div>
+                    </div>
+                    <div class="adminBody">
+                        @foreach (Transaction t in Model.Transactions)
+                        {
+                            <div class="adminItem">
+                                <div class="adminField">@t.Id</div>
+                                <div class="adminField">@String.Format("{0:MMM d, yyyy}", t.OnDate)</div>
+                                <div class="adminField">@t.Payee</div>
+                                <div class="adminField">@t.FromAccount</div>
+                                <div class="adminField">@t.ToAccount</div>
+                                <div class="adminField">@String.Format("{0:c}", t.Amount)</div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $('.tabbed-tab').click(function () {
+            var index = $(this).data('tab');
+            $('.tabbed-tab').removeClass('tabbed-active');
+            $(this).addClass('tabbed-active');
+            $('.tabbed-page').hide();
+            $('.tabbed-page[data-page = "' + index + '"]').show();
+        });
+    </script>
+}

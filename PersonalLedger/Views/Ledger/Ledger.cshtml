@@ -1,0 +1,283 @@
+﻿@model PersonalLedger.ViewModels.TransactionsViewModel
+@using PersonalLedger.Repositories;
+@using PersonalLedger.DomainModels;
+
+@{
+    ViewBag.Title = "Leger";
+}
+
+<div style="min-width:4000px;">
+    <div class="outerBorder">
+        <div class="innerBorder">
+
+            <table>
+                <caption>Ledger</caption>
+                <thead>
+                    <tr>
+                        <th class="ledgerHeadCell" rowspan="2">Flags</th>
+                        <th class="ledgerHeadCell" rowspan="2">R</th>
+                        <th class="ledgerHeadCell" rowspan="2">Tax</th>
+                        <th class="ledgerHeadCell" rowspan="2">Date</th>
+                        <th class="ledgerHeadCell" rowspan="2">Category</th>
+                        <th class="ledgerHeadCell" rowspan="2">Payee</th>
+                        <th class="ledgerHeadCell" rowspan="2">From Account</th>
+                        <th class="ledgerHeadCell" rowspan="2">To Account</th>
+                        <th class="ledgerHeadCell" rowspan="2">Amount</th>
+                        <th class="ledgerHeadCell" rowspan="2">Memo</th>
+
+                        @foreach (KeyValuePair<int, string> account in (Dictionary<int, string>)Session["AccountName"])
+                        {
+                            <th colspan="2" class="ledgerHeadCell" style="text-align:center;">@account.Value</th>
+                        }
+                        <th class="ledgerHeadBalanceCell" rowspan="2">Assets</th>
+                        <th class="ledgerHeadBalanceCell" rowspan="2">Liablilties</th>
+                        <th class="ledgerHeadBalanceCell" rowspan="2">Net Worth</th>
+                        <th colspan="2" class="ledgerHeadCell" rowspan="2">&nbsp;</th>
+                    </tr>
+                    <tr>
+                        @foreach (KeyValuePair<int, string> account in (Dictionary<int, string>)Session["AccountName"])
+                        {
+                            <th class="ledgerHeadCell">Change</th>
+                            <th class="ledgerHeadBalanceCell">Balance</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.LedgerLines.Count; i++)
+                    {
+                        <tr class="displayer stripeme23">
+                            <td>
+                                @if (Model.LedgerLines[i].Flag0)
+                                {
+                                    <span class="flag flag0"></span>
+                                }
+                                else
+                                {
+                                    <span class="flag flagfalse"></span>
+                                }
+                                @if (Model.LedgerLines[i].Flag1)
+                                {
+                                    <span class="flag flag1"></span>
+                                }
+                                else
+                                {
+                                    <span class="flag flagfalse"></span>
+                                }
+                                @if (Model.LedgerLines[i].Flag2)
+                                {
+                                    <span class="flag flag2"></span>
+                                }
+                                else
+                                {
+                                    <span class="flag flagfalse"></span>
+                                }
+                                @if (Model.LedgerLines[i].Flag3)
+                                {
+                                    <span class="flag flag3"></span>
+                                }
+                                else
+                                {
+                                    <span class="flag flagfalse"></span>
+                                }
+                                @if (Model.LedgerLines[i].Flag4)
+                                {
+                                    <span class="flag flag4"></span>
+                                }
+                                else
+                                {
+                                    <span class="flag flagfalse"></span>
+                                }
+                                @if (Model.LedgerLines[i].Flag5)
+                                {
+                                    <span class="flag flag5"></span>
+                                }
+                                else
+                                {
+                                    <span class="flag flagfalse"></span>
+                                }
+                                @if (Model.LedgerLines[i].Flag6)
+                                {
+                                    <span class="flag flag6"></span>
+                                }
+                                else
+                                {
+                                    <span class="flag flagfalse"></span>
+                                }
+                                @if (Model.LedgerLines[i].Flag7)
+                                {
+                                    <span class="flag flag7"></span>
+                                }
+                                else
+                                {
+                                    <span class="flag flagfalse"></span>
+                                }
+                            </td>
+                            <td style="text-align:center;">
+                                @if (Model.LedgerLines[i].Reconciled)
+                                {
+                                    @Html.ActionLink(HttpUtility.HtmlDecode("&#10004;"), "UnreconcileTransaction", null, new { @class = "btn btn-xxs w60 btn-clear", @id = Model.LedgerLines[i].TransactionId })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Reconcile", "ReconcileTransaction", null, new { @class = "btn btn-xxs w60 btn-success", @id = Model.LedgerLines[i].TransactionId })
+                                }
+                            </td>
+                            <td style="text-align:center;">
+                                @if (Model.LedgerLines[i].Tax)
+                                {
+                                    <span>&#10004;</span>
+                                }
+                                else
+                                {
+                                    <span>&nbsp;</span>
+                                }
+                            </td>
+                            <td>@Html.DisplayFor(m => m.LedgerLines[i].OnDate)</td>
+                            <td>@Html.DisplayFor(m => m.LedgerLines[i].Category)</td>
+                            <td>@Html.DisplayFor(m => m.Transactions[i].Payee)</td>
+                            <td>@Html.DisplayFor(m => m.Transactions[i].FromAccount)</td>
+                            <td>@Html.DisplayFor(m => m.Transactions[i].ToAccount)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.LedgerLines[i].Amount)</td>
+                            <td>@Html.DisplayFor(m => m.LedgerLines[i].Memo)</td>
+                            @for (int j = 0; j < Model.LedgerLines[i].LineAccounts.Count; j++)
+                            {
+                                <td class="currencyCell">@Html.DisplayFor(m => m.LedgerLines[i].LineAccounts[j].Change)</td>
+                                <td class="ledgerBalanceCell currencyCell">@Html.DisplayFor(m => m.LedgerLines[i].LineAccounts[j].Balance)</td>
+                            }
+                            <td class="currencyCell">@Html.DisplayFor(m => m.LedgerLines[i].Assets)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.LedgerLines[i].Liabilities)</td>
+                            <td class="currencyCell">@Html.DisplayFor(m => m.LedgerLines[i].NetWorth)</td>
+                            <td><button class="btn btn-xxs w60 btn-warning editbutton" data-item="@Model.LedgerLines[i].TransactionId">Edit</button></td>
+                            <td>@Html.ActionLink("Delete", "DeleteTransaction", new { id = Model.LedgerLines[i].TransactionId }, new { @class = "btn btn-xxs w60 btn-danger deletebutton", onclick = "return confirm('Delete transaction " + String.Format("{0:C}", Model.LedgerLines[i].Amount) + " on " + String.Format("{0:MM/dd/yyyy}", Model.LedgerLines[i].OnDate) + "?');" })</td>
+                        </tr>
+
+                        <tr class="editrow editor hidden"></tr>
+                    }  <!--transaction iteration-->
+                </tbody>
+            </table>
+            <div class="spacediv">&nbsp;</div>
+
+            <table style="margin:auto;">
+                <tr class="editrow">
+                    @using (Html.BeginForm("AddTransaction", "Ledger"))
+                    {
+                        <td>
+                            <span class="flagwrapper flag0">
+                                @Html.CheckBoxFor(m => m.NewTransaction.Flag0)
+                            </span>
+                            <span class="flagwrapper flag1">
+                                @Html.CheckBoxFor(m => m.NewTransaction.Flag1)
+                            </span>
+                            <span class="flagwrapper flag2">
+                                @Html.CheckBoxFor(m => m.NewTransaction.Flag2)
+                            </span>
+                            <span class="flagwrapper flag3">
+                                @Html.CheckBoxFor(m => m.NewTransaction.Flag3)
+                            </span>
+                            <span class="flagwrapper flag4">
+                                @Html.CheckBoxFor(m => m.NewTransaction.Flag4)
+                            </span>
+                            <span class="flagwrapper flag5">
+                                @Html.CheckBoxFor(m => m.NewTransaction.Flag5)
+                            </span>
+                            <span class="flagwrapper flag6">
+                                @Html.CheckBoxFor(m => m.NewTransaction.Flag6)
+                            </span>
+                            <span class="flagwrapper flag7">
+                                @Html.CheckBoxFor(m => m.NewTransaction.Flag7)
+                            </span>
+                        </td>
+                        <td style="text-align:center; padding-left:10px; padding-right:5px;">
+                            <label>Rcn</label><br />
+                            @Html.EditorFor(m => m.NewTransaction.Reconciled)
+                        </td>
+                        <td style="text-align:center; padding-left:5px; padding-right:10px;">
+                            <label>Tax</label><br />
+                            @Html.EditorFor(m => m.NewTransaction.Tax)
+                        </td>
+                        <td>
+                            @Html.JQueryUI().DatepickerFor(m => m.NewTransaction.OnDate)
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(m => m.NewTransaction.CategoryId, new List<SelectListItem>((List<SelectListItem>)Session["SL_Categories"]), new { @class = "newcategoryselect" })
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.NewTransaction.PayeeId, new List<SelectListItem>((List<SelectListItem>)Session["SL_Payees"]))
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(m => m.NewTransaction.FromAccountId, new List<SelectListItem>((List<SelectListItem>)Session["SL_Accounts"]))
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(m => m.NewTransaction.ToAccountId, new List<SelectListItem>((List<SelectListItem>)Session["SL_Accounts"]))
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.NewTransaction.Amount)
+                        </td>
+                        <td>
+                            @Html.EditorFor(m => m.NewTransaction.Memo, new { htmlAttributes = new { @style = "width:100%;" } })
+                        </td>
+                        <td colspan="2">
+                            <input type="submit" value="Save" class="btn btn-xs w100 btn-success" style="margin-left:30px;" />
+                        </td>
+                    }  <!--add form-->
+                </tr>
+            </table>
+        </div>  <!--inner border-->
+    </div>  <!--outer border-->
+</div>
+
+
+@section scripts{
+    <script>
+    $('.editbutton').click(function () {
+        event.preventDefault();
+        var displayer = $(this).parent().parent();
+        var editor = displayer.nextAll(".editor:first");
+        var itemId = $(this).data('item');
+        $('.deletebutton').addClass('hidden');
+        $('.editbutton').addClass('hidden');
+        displayer.addClass('hidden');
+        editor.removeClass('hidden');
+        var ajaxUrl = "@Url.Action("EditTransaction")" + "/" + itemId;
+        editor.load(ajaxUrl, function () {
+            $('#canceledit', this).click(function () {
+                event.preventDefault();
+                var editor = $(this).parent().parent();
+                var displayer = editor.prevAll(".displayer:first");
+                var itemId = $(this).data('item');
+                $('.deletebutton').removeClass('hidden');
+                $('.editbutton').removeClass('hidden');
+                displayer.removeClass('hidden');
+                editor.addClass('hidden');
+                editor.clear();
+            });
+        });
+    });
+
+    $('.categoryselect').change(function () {
+        var catSelected = $(this).val();
+        if (catSelected != null) {
+            var catType = $('#cat_' + catSelected).html();
+            if (catType == 1) {
+                $('#NewTransaction_FromAccountId').addClass('hidden');
+                $('#NewTransaction_FromPayeeId').removeClass('hidden');
+                $('#NewTransaction_ToAccountId').removeClass('hidden');
+                $('#NewTransaction_ToPayeeId').addClass('hidden');
+            }
+            else if (catType == 2) {
+                $('#NewTransaction_FromAccountId').removeClass('hidden');
+                $('#NewTransaction_FromPayeeId').addClass('hidden');
+                $('#NewTransaction_ToAccountId').addClass('hidden');
+                $('#NewTransaction_ToPayeeId').removeClass('hidden');
+            }
+            else {
+                $('#NewTransaction_FromAccountId').removeClass('hidden');
+                $('#NewTransaction_FromPayeeId').addClass('hidden');
+                $('#NewTransaction_ToAccountId').removeClass('hidden');
+                $('#NewTransaction_ToPayeeId').addClass('hidden');
+            }
+        }
+    });
+    </script>
+}
+

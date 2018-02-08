@@ -1,0 +1,228 @@
+﻿$default: #aaaaaa;
+$default-hover: #cccccc;
+$info: #32b432;
+$info-hover: #32b432;
+$success: #32b432;
+$success-hover: #32b432;
+$warning: #dcd20a;
+$warning-hover: #b4b432;
+$danger: #b46464;
+$danger-hover: #fa5050;
+$grayhighlight: #eeeeee;
+$yellowhighlight: #ffffdd;
+$coolgreen: #cde6cd;
+$tabtop: #e7e2c4;
+$tabbottom: #f6f1d4;
+$tabactivetop: #eeeeee;
+$tabactivebottom: #ffffff;
+
+
+/*#region Document Areas*/
+body {
+    font-family: Helvetica;
+}
+
+footer {
+    text-align: center;
+}
+
+footer > a {
+    text-decoration: none;
+}
+/*#endregion*/
+
+/*#region Common Elements*/
+.ui-autocomplete-input {
+    width: 100%;
+}
+
+select {
+    height: 26px;
+    width: 100%;
+}
+/*#endregion*/
+
+/*#region Tabbing*/
+.tabbed-tabs {
+    border-bottom: 1px solid gray;
+    display: inline-block;
+    width: 100%;
+}
+
+.tabbed-tabs::after {
+    clear: both;
+}
+
+.tabbed-tab {
+    float: left;
+    width: 200px;
+    height: 30px;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    margin-left: -5px;
+    padding-top: 5px;
+    text-align: center;
+    border-top: 1px solid gray;
+    border-right: 1px solid gray;
+    border-bottom: none;
+    border-left: 1px solid gray;
+    background: linear-gradient($tabtop, $tabbottom);
+    font-family: Garamond;
+    font-size: 16px;
+    cursor:pointer;
+}
+
+.tabbed-activetab {
+    background: linear-gradient($tabactivetop, $tabactivebottom);
+    position: relative;
+    top: 1px;
+}
+/*#endregion*/
+
+/*#region Common Properties*/
+.center {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.flexRow {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.w40 {
+    width: 40px;
+}
+
+.w50 {
+    width: 50px;
+}
+
+.w60 {
+    width: 60px;
+}
+
+.w70 {
+    width: 70px;
+}
+
+.w80 {
+    width: 80px;
+}
+
+.w90 {
+    width: 90px;
+}
+
+.w100 {
+    width: 100px;
+}
+
+.w120 {
+    width: 120px;
+}
+
+.w140 {
+    width: 140px;
+}
+
+.w160 {
+    width: 160px;
+}
+
+.w180 {
+    width: 180px;
+}
+
+.w200 {
+    width: 200px;
+}
+
+.striped:nth-child(2n) > td {
+    background-color: whitesmoke;
+}
+
+.striped2:nth-child(4n) {
+    background-color: whitesmoke;
+}
+
+.blockstriped {
+    :nth-child(6n+4) {
+        background: whitesmoke;
+    }
+
+    :nth-child(6n+5) {
+        background: whitesmoke;
+    }
+
+    :nth-child(6n+6) {
+        background: whitesmoke;
+    }
+}
+
+.blockstriped2 {
+    :nth-child(12n+8) {
+        background: whitesmoke;
+    }
+
+    :nth-child(12n+10) {
+        background: whitesmoke;
+    }
+
+    :nth-child(12n+12) {
+        background: whitesmoke;
+    }
+}
+/*#endregion*/
+
+/*#region Buttons*/
+.btn-success {
+    background: $success;
+    border: none;
+}
+
+.btn-success:hover {
+    background: $success-hover;
+    border: none;
+}
+
+.btn-info {
+    background: $info;
+    border: none;
+}
+
+.btn-info:hover {
+    background: $info-hover;
+}
+
+.btn-warning {
+    background: $warning;
+    border: none;
+}
+
+.btn-warning:hover {
+    background: $warning-hover;
+}
+
+.btn-danger {
+    background: $danger;
+    border: none;
+}
+
+.btn-danger:hover {
+    background: $danger-hover;
+}
+
+.btn-clear {
+    background-color: transparent;
+    border: 1px solid lightgray;
+}
+
+.btn-xxs {
+    padding: 0;
+    font-size: 11px;
+}
+/*#endregion*/

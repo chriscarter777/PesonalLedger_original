@@ -1,0 +1,249 @@
+﻿@model PersonalLedger.ViewModels.CategoriesViewModel
+@using PersonalLedger.Repositories;
+@using PersonalLedger.DomainModels;
+
+@{
+    ViewBag.Title = "Categories";
+}
+
+
+<div class="outerBorder">
+    <div class="innerBorder">
+        <div class="flexRow">
+            <table>
+                <caption>Other Categories</caption>
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "name", "Name" })
+                        </th>
+                        <th>
+                            @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "tax", "Tax" })
+                        </th>
+                        <th colspan="2">
+                            <a href="#" class="tableHeadCell">&nbsp;</a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.OtherCategories != null)
+                    {
+                        using (Html.BeginForm())
+                        {
+                            for (int i = 0; i < Model.OtherCategories.Count; i++)
+                            {
+                                <tr class="displayer stripeme23">
+                                    <td>@Html.DisplayFor(m => m.OtherCategories[i].Name)</td>
+                                    <td style="text-align:center;">
+                                        @if (Model.OtherCategories[i].Tax)
+                                        {
+                                            <span>&#10004;</span>
+                                        }
+                                        else
+                                        {
+                                            <span>&nbsp;</span>
+                                        }
+                                    </td>
+                                    <td><button class="btn btn-xs w60 btn-warning editbutton">Edit</button></td>
+                                    <td>@Html.ActionLink("Delete", "DeleteCategory", new { id = Model.OtherCategories[i].Id }, new { @class = "btn btn-xs w60 btn-danger deletebutton", onclick = "return confirm('Delete " + Model.IncomeCategories[i].Name + "?');" })</td>
+                                </tr>
+
+                                <tr class="editor hidden">
+                                    @Html.HiddenFor(m => m.OtherCategories[i].Id)
+                                    @Html.HiddenFor(m => m.OtherCategories[i].Type)
+                                    <td>@Html.EditorFor(m => m.OtherCategories[i].Name, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                                    <td>@Html.EditorFor(m => m.OtherCategories[i].Tax, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                                    <td><input type="submit" value="Save" class="btn btn-xs w100 btn-success" style="margin-left:30px;" formaction="@Url.Action("UpdateOtherCategory", new { @id = i })" /></td>
+                                    <td><button class="btn btn-xs w100 btn-warning canceledit" style="margin-left:30px;">Cancel Edit</button></td>
+                                </tr>
+                            } <!--income category iteration-->
+                        } <!--form-->
+                    }  <!--if income categories not null-->
+                </tbody>
+            </table>
+
+            <table>
+                <caption>Income Categories</caption>
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "name", "Name" })
+                        </th>
+                        <th>
+                            @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "tax", "Tax" })
+                        </th>
+                        <th colspan="2">
+                            <a href="#" class="tableHeadCell">&nbsp;</a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.IncomeCategories != null)
+                    {
+                        using (Html.BeginForm())
+                        {
+                            for (int i = 0; i < Model.IncomeCategories.Count; i++)
+                            {
+                                <tr class="displayer stripeme23">
+                                    <td>@Html.DisplayFor(m => m.IncomeCategories[i].Name)</td>
+                                    <td style="text-align:center;">
+                                        @if (Model.IncomeCategories[i].Tax)
+                                        {
+                                            <span>&#10004;</span>
+                                        }
+                                        else
+                                        {
+                                            <span>&nbsp;</span>
+                                        }
+                                    </td>
+                                    <td><button class="btn btn-xs w60 btn-warning editbutton">Edit</button></td>
+                                    <td>@Html.ActionLink("Delete", "DeleteCategory", new { id = Model.IncomeCategories[i].Id }, new { @class = "btn btn-xs w60 btn-danger deletebutton", onclick = "return confirm('Delete " + Model.IncomeCategories[i].Name + "?');" })</td>
+                                </tr>
+
+                                <tr class="editor hidden">
+                                    @Html.HiddenFor(m => m.IncomeCategories[i].Id)
+                                    @Html.HiddenFor(m => m.IncomeCategories[i].Type)
+                                    <td>@Html.EditorFor(m => m.IncomeCategories[i].Name, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                                    <td>@Html.EditorFor(m => m.IncomeCategories[i].Tax, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                                    <td><input type="submit" value="Save" class="btn btn-xs w100 btn-success" style="margin-left:30px;" formaction="@Url.Action("UpdateIncomeCategory", new { @id = i })" /></td>
+                                    <td><button class="btn btn-xs w100 btn-warning canceledit" style="margin-left:30px;">Cancel Edit</button></td>
+                                </tr>
+                            } <!--income category iteration-->
+                        } <!--form-->
+                    }  <!--if income categories not null-->
+                </tbody>
+            </table>
+
+            <table>
+                <caption>Expense Categories</caption>
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "name", "Name" })
+                        </th>
+                        <th>
+                            @Html.Partial("_TableColumnHead", new List<string> { Model.SortOrder, "tax", "Tax" })
+                        </th>
+                        <th colspan="2">
+                            <a href="#" class="tableHeadCell">&nbsp;</a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.ExpenseCategories != null)
+                    {
+                        using (Html.BeginForm())
+                        {
+                            for (int i = 0; i < Model.ExpenseCategories.Count; i++)
+                            {
+                                <tr class="displayer stripeme23">
+                                    <td>@Html.DisplayFor(m => m.ExpenseCategories[i].Name)</td>
+                                    <td style="text-align:center;">
+                                        @if (Model.ExpenseCategories[i].Tax)
+                                        {
+                                            <span>&#10004;</span>
+                                        }
+                                        else
+                                        {
+                                            <span>&nbsp;</span>
+                                        }
+                                    </td>
+                                    <td><button class="btn btn-xs w60 btn-warning editbutton">Edit</button></td>
+                                    <td>@Html.ActionLink("Delete", "DeleteAccount", new { id = Model.ExpenseCategories[i].Id }, new { @class = "btn btn-xs w60 btn-danger deletebutton", onclick = "return confirm('Delete " + Model.ExpenseCategories[i].Name + "?');" })</td>
+                                </tr>
+
+                                <tr class="editor hidden">
+                                    @Html.HiddenFor(m => m.ExpenseCategories[i].Id)
+                                    @Html.HiddenFor(m => m.ExpenseCategories[i].Type)
+                                    <td>@Html.EditorFor(m => m.ExpenseCategories[i].Name, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                                    <td>@Html.EditorFor(m => m.ExpenseCategories[i].Tax, new { htmlAttributes = new { @class = "accountEditCell" } })</td>
+                                    <td><input type="submit" value="Save" class="btn btn-xs w100 btn-success" formaction="@Url.Action("UpdateExpenseCategory", new { @id = i })" /></td>
+                                    <td><button class="btn btn-xs w100 btn-warning canceledit">Cancel Edit</button></td>
+                                </tr>
+                            } <!--expense category iteration-->
+                        } <!--form-->
+                    }  <!--if expense categories not null-->
+                </tbody>
+            </table>
+        </div>
+
+        <hr />
+
+        <div id="adder" class="hidden">
+            @using (Html.BeginForm("AddCategory", "Categories"))
+            {
+                <div class="row">
+                    <div class="col-md-2 col-md-offset-3">
+                        <div class="input-group">
+                            <span class="input-group-addon">Name:</span>
+                            @Html.EditorFor(m => m.NewCategory.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="input-group">
+                            <label>Income? &nbsp;</label>
+                            @Html.RadioButtonFor(m => m.NewCategory.Type, 0) Other
+                            <br />
+                            @Html.RadioButtonFor(m => m.NewCategory.Type, 1) Income
+                            <br />
+                            @Html.RadioButtonFor(m => m.NewCategory.Type, 2) Expense
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="input-group">
+                            <label>Tax?  &nbsp;</label>
+                            @Html.EditorFor(m => m.NewCategory.Tax)
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="submit" value="Save" class="btn btn-xs w100 btn-success" style="margin-left:30px;" />
+                        <button id="canceladd" class="btn btn-xs w100 btn-warning" style="margin-left:30px;">Cancel Add</button>
+                    </div>
+                </div>
+            }
+        </div>  <!--adder-->
+
+        <div class="center">
+            <button id="addbutton" class="btn btn-xs w200 btn-success  center">Add a New Category</button>
+        </div>
+
+    </div>  <!--inner border-->
+</div>  <!--outer border-->
+
+
+@section scripts{
+    <script>
+        $('.editbutton').click(function () {
+            event.preventDefault();
+            var displayer = $(this).parent().parent();
+            var editor = displayer.nextAll('.editor:first');
+            $('.deletebutton').addClass('hidden');
+            $('.editbutton').addClass('hidden');
+            displayer.addClass('hidden');
+            editor.removeClass('hidden');
+        });
+
+        $('.canceledit').click(function () {
+            event.preventDefault();
+            var editor = $(this).parent().parent();
+            var displayer = editor.prevAll('.displayer:first');
+            $('.deletebutton').removeClass('hidden');
+            $('.editbutton').removeClass('hidden');
+            displayer.removeClass('hidden');
+            editor.addClass('hidden');
+        });
+
+        $('#addbutton').click(function () {
+            event.preventDefault();
+            $('#adder').removeClass('hidden');
+            $('#addbutton').addClass('hidden');
+        });
+
+        $('#canceladd').click(function () {
+            event.preventDefault();
+            $('#adder').addClass('hidden');
+            $('#addbutton').removeClass('hidden');
+        });
+
+    </script>
+}

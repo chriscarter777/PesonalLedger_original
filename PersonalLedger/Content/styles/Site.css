@@ -1,0 +1,341 @@
+﻿/*#region Document Areas*/
+body {
+  padding-top: 50px;
+  padding-bottom: 20px; }
+
+.body-content {
+  padding-left: 15px;
+  padding-right: 15px; }
+
+footer {
+  padding: 5px;
+  background: #cde6cd;
+  border-top: 1px solid green;
+  color: green;
+  text-shadow: 0 0 4px yellow;
+  font-size: 14px;
+  font-family: Garamond; }
+
+.dl-horizontal dt {
+  white-space: normal; }
+
+/*#endregion*/
+/*#region Common Elements*/
+h1 {
+  text-align: center;
+  font-size: 72px; }
+
+h2 {
+  text-align: center;
+  font-size: 48px; }
+
+h3 {
+  font-size: 36px; }
+
+h4 {
+  font-size: 24px; }
+
+/*#endregion*/
+/*#region Navigation*/
+.navbar-inverse {
+  background: #cde6cd;
+  border-color: green;
+  font-family: Garamond; }
+
+.navbar-inverse > div.container-fluid {
+  margin-left: 80px;
+  margin-right: 80px; }
+
+.navbar-inverse .navbar-nav > li > a {
+  color: green;
+  text-shadow: 0 0 4px yellow;
+  font-size: 20px;
+  margin-right: 20px; }
+
+.navbar-inverse .navbar-nav > li > a:hover {
+  color: gold;
+  font-size: 24px;
+  text-shadow: 0 0 4px green; }
+
+.navbar-inverse .navbar-brand {
+  color: green;
+  text-shadow: 0 0 4px yellow;
+  font-size: 28px;
+  font-style: italic;
+  margin-right: 100px; }
+
+/*#endregion*/
+/*#region Tabs*/
+.tabbed-tab {
+  font-family: Garamond; }
+
+/*#endregion*/
+/*#region Tables*/
+.outerBorder {
+  border: 4px solid goldenrod;
+  padding: 5px;
+  margin: 40px auto;
+  background: beige; }
+
+.innerBorder {
+  border: 2px solid goldenrod;
+  padding: 15px;
+  background: white; }
+
+caption {
+  margin: 5px 0 5px 0;
+  text-align: center;
+  font-size: 36px;
+  background: #cde6cd;
+  font-family: Garamond;
+  font-style: italic;
+  color: green;
+  text-shadow: 0 0 4px yellow; }
+
+.tableHeadCell {
+  display: inline-block;
+  width: 100%;
+  padding: 5px 20px 5px 20px;
+  background: khaki;
+  /*background-color: rgb(220,235,150);*/
+  color: darkgreen;
+  font-size: 18px;
+  font-family: Garamond; }
+
+a.tableHeadCell:hover {
+  text-decoration: none;
+  color: green;
+  text-shadow: 0 0 2px mintcream; }
+
+.tableHeadCell-active {
+  display: block;
+  width: 100%;
+  padding: 5px 20px 5px 20px;
+  background: darkkhaki;
+  /*background: khaki;*/
+  /*background: rgb(220,235,150);*/
+  color: darkgreen;
+  font-size: 18px;
+  font-family: Garamond;
+  /*font-style: italic;*/ }
+
+a.tableHeadCell-active:hover {
+  text-decoration: none;
+  color: green;
+  text-shadow: 0 0 2px mintcream; }
+
+.accountEditCell {
+  margin-left: 0;
+  padding-right: 15px;
+  width: 90%; }
+
+.currencyCell {
+  text-align: right;
+  padding-right: 15px; }
+
+td {
+  vertical-align: top;
+  padding: 2px 10px; }
+
+/*#endregion*/
+/*#region Editor*/
+.input-group-addon {
+  /*width: 125px;*/
+  background: khaki;
+  /*background: rgb(220,235,150);*/
+  color: darkgreen;
+  font-size: 16px;
+  font-family: Garamond;
+  text-align: right;
+  padding-right: 5px; }
+
+.addin-left {
+  background: white;
+  color: black;
+  font-family: Helvetica;
+  border-right: none; }
+
+.addin-right {
+  background: white;
+  color: black;
+  font-family: Helvetica;
+  border-left: none; }
+
+.has-addin-left {
+  border-left: none; }
+
+.has-addin-right {
+  border-right: none; }
+
+/*#endregion*/
+/*#region Accounts*/
+/*#endregion*/
+/*#region Categories*/
+/*#endregion*/
+/*#region Home*/
+.mainTitle {
+  margin-top: 300px;
+  margin-left: calc(50% - 300px); }
+
+.mainTitle-sub {
+  position: relative;
+  font-size: 40px;
+  font-family: Garamond;
+  font-style: italic;
+  color: darkgreen;
+  -webkit-text-stroke: 1px yellowgreen;
+  text-shadow: 0 0 8px gold;
+  z-index: 5;
+  animation: fromUpperLeft 0.5s ease-out; }
+
+.mainTitle-main {
+  position: relative;
+  top: -74px;
+  left: 12px;
+  font-family: Garamond;
+  font-size: 100px;
+  color: green;
+  -webkit-text-stroke: 1px goldenrod;
+  text-shadow: 0 0 40px yellow;
+  z-index: 1;
+  animation: fromLowerRight 0.5s ease-out; }
+
+@keyframes fromLowerRight {
+  0% {
+    transform: translate(100%, 400%); }
+  100% {
+    transform: translate(0%, 0%); } }
+
+@keyframes fromUpperLeft {
+  0% {
+    transform: translate(-100%, -400%); }
+  100% {
+    transform: translate(0%, 0%); } }
+
+/*#endregion*/
+/*#region Payees*/
+/*#endregion*/
+/*#region Reports*/
+/*#endregion*/
+/*#region Transactions*/
+.flag {
+  display: inline-block;
+  height: 17px;
+  width: 10px;
+  margin-right: -2px;
+  margin-bottom: -2px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px; }
+
+.flag0 {
+  background: red; }
+
+.flag1 {
+  background: orange; }
+
+.flag2 {
+  background: RGB(255, 235, 0); }
+
+.flag3 {
+  background: green; }
+
+.flag4 {
+  background: blue; }
+
+.flag5 {
+  background: purple; }
+
+.flag6 {
+  background: pink; }
+
+.flag7 {
+  background: moccasin; }
+
+.flagfalse {
+  background-color: transparent; }
+
+.flagwrapper {
+  display: inline-block;
+  width: 12px;
+  height: 24px;
+  margin-right: -2px;
+  margin-left: -2px;
+  padding-top: 2px; }
+
+.editrow {
+  height: 40px;
+  background: linear-gradient(#cde6cd, white, white, #cde6cd); }
+
+/*#endregion*/
+/*#region Ledger*/
+.ledgerHeadCell {
+  padding: 5px;
+  background: khaki;
+  color: darkgreen;
+  font-size: 16px;
+  font-family: Garamond;
+  border: 1px solid seagreen;
+  text-align: center; }
+
+.ledgerHeadBalanceCell {
+  padding: 5px;
+  background: #cde6cd;
+  color: darkgreen;
+  font-size: 16px;
+  font-family: Garamond;
+  border: 1px solid seagreen;
+  text-align: center; }
+
+.ledgerBalanceCell {
+  background: mintcream; }
+
+.spacediv {
+  display: block;
+  min-height: 30px; }
+
+/*#endregion*/
+/*#region Admin*/
+.adminGroup {
+  display: table;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto; }
+
+.adminHeader {
+  display: table-header-group;
+  background: gainsboro;
+  color: blue; }
+
+.adminBody {
+  display: table-row-group; }
+
+.adminItem {
+  display: table-row;
+  border: 1px solid lightgray; }
+
+.adminItem:nth-child(6n+4) {
+  background-color: #ffffdd; }
+
+.adminItem:nth-child(6n+5) {
+  background-color: #ffffdd; }
+
+.adminItem:nth-child(6n+6) {
+  background-color: #ffffdd; }
+
+.adminField {
+  display: table-cell;
+  padding: 3px 20px; }
+
+.adminDivider {
+  display: table-cell;
+  height: 1px;
+  border: 1px solid green; }
+
+.addTran {
+  display: block;
+  background: mintcream;
+  border: 1px solid lightgray;
+  height: 120px; }
+
+/*#endregion*/
+
